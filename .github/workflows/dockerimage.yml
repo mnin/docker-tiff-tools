@@ -1,0 +1,19 @@
+name: Tiff-Tools Docker Image
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build the Docker image
+      run: docker build . --tag mnin/tiff-tools:latest
+    - name: Login to Docker Registry
+      run: docker login --username $DOCKER_USERNAME --password $DOCKER_PASSWORD
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+    - name: Push the Image to the Docker Registry
+      run: docker push mnin/tiff-tools:latest
